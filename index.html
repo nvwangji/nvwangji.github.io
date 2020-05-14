@@ -263,6 +263,7 @@ html, body {
 <div class="universe">
 <div class="sun"></div>
   <div class="moon"></div>
+  <div id='d'></div>
   <!--<div class='moon2'></div>-->
 </div>
 
@@ -271,4 +272,11 @@ html, body {
 
 
 </body>
+<script>
+    let now = new Date();
+    let start = new Date(2020,3,6);
+    let days = (now-start)/(1*24*60*60*1000);
+     document.getElemetById('d').innerHTML = days;
+    
+</script>
 </html>
