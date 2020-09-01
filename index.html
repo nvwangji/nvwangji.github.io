@@ -5,7 +5,10 @@
   <meta charset="utf-8">
   <title>hello Moon</title>
   <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-  
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/xp.css"
+>
   <style>
     html,
     body {
@@ -323,6 +326,86 @@
         transform: translateY(-100vh);
       }
     }
+     .blood {
+        width: 194px;
+
+    }
+
+    .title {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .body {
+        width: 100%;
+        height: 30px;
+        display: flex;
+    }
+
+    .level {
+        width: 15%;
+        border: 2px solid #716f6a;
+        height: 100%;
+        color: #10a6ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+
+    .pro {
+        width: 85%;
+        border: 2px solid #716f6a;
+        border-radius: 2px;
+    }
+
+    .bloodlist {
+        width: 100%;
+        background-color: #000;
+        height: 80%;
+    }
+
+    .bluelist {
+        width: 100%;
+        background-color: #50dcd8;
+        height: 20%;
+    }
+
+    .bloodone {
+        width: 100%;
+        height: 50%;
+        background-image: repeating-linear-gradient(to right, #1cba13 0px,
+                #1cba13 5px,
+                black 5px,
+                black 6px);
+
+    }
+
+    .bloodone1 {
+        width: 100%;
+        height: 50%;
+        /* background-color: #1cba13; */
+        background-image: repeating-linear-gradient(to right, #1cba13 0px,
+                #1cba13 59px,
+                black 59px,
+                black 60px);
+
+    }
+
+    .out {
+        display: flex;
+        justify-content: space-around;
+        width:80%;
+        margin:0 auto;
+    }
+    .damage{
+     color:red;
+     font-size: 24px;
+    }
   </style>
 </head>
 
@@ -332,16 +415,87 @@
     <div class="moon"></div>
     <!--<div class='moon2'></div>-->
   </div>
+  <div class='out'>
+        <div class='blood'>
+            <div class='title'>不详之刃</div>
+            <div class='body'>
+                <div class='level'>12</div>
+                <div class='pro'>
+                    <div class='bloodlist' style='width:100%;'>
+                        <div class='bloodone'>
+
+                        </div>
+                        <div class='bloodone1'>
+
+                        </div>
+                    </div>
+                    <div class='bluelist' style='width:100%;'>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class='damage' id='sh'>
+             
+        </div>
+        <div class="window" style="width: 400px">
+            <div class="title-bar">
+                <div class="title-bar-text">调整宽度</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Minimize"></button>
+                    <button aria-label="Maximize"></button>
+                    <button aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="window-body">
+                <p>滑动调整血量</p>
+                <div class="field-row" style="width: 400px">
+                    <label for="red" style='width: 100px;'>血量:</label>
+                    <label for="range26">0</label>
+                    <input id="red" type="range" min="0" max="27" value="27" />
+                    <label for="range27" style='width: 50px;'>100%</label>
+                    
+                </div>
+                <div class="field-row" style="width: 400px">
+                   
+                    <label for="range2" style='width: 100px;'>资源槽:</label>
+                    <label for="range2">0</label>
+                    <input id="blue" type="range" min="0" max="27" value="27" />
+                    <label for="blue" style='width: 50px;'>100%</label>
+                </div>
+            </div>
+        </div>
+    </div>
   <canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
 <script src="./js.js"></script>
+   $(function () {
+        let preblood = $('#red').val();
+        $("#red").change(function () {
+            let blood = $('#red').val();
+            console.log(blood * 100 / 27 + '%');
+
+            $('.bloodlist').css('width', Math.round(blood * 100 / 27) + '%');
+            let c =blood-preblood;
+            if(c<0){
+                $('#sh').text(`${(blood-preblood)*100}`);
+                $('#sh').css('color','red');
+            }else{
+                $('#sh').text(`+${(blood-preblood)*100}`);
+                $('#sh').css('color','green');
+            }
+            //$('#sh').text(`${(blood-preblood)*100}`);
+            preblood = blood;
+        });
+        $("#blue").change(function () {
+            let blood = $('#blue').val();
+            console.log(blood * 100 / 27 + '%');
+
+            $('.bluelist').css('width', Math.round(blood * 100 / 27) + '%');
+        });
+    });
 </body>
   
-<script>
-  let now = new Date();
-  let start = new Date(2020, 3, 6);
-  let days = (now - start) / (1 * 24 * 60 * 60 * 1000);
-  // document.getElemetById('d').innerHTML = days;
-</script>
 
  
 </html>
