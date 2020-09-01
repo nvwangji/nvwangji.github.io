@@ -469,6 +469,7 @@
     </div>
   <canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
 <script src="./js.js"></script>
+  <script>
    $(function () {
         let preblood = $('#red').val();
         $("#red").change(function () {
@@ -494,6 +495,7 @@
             $('.bluelist').css('width', Math.round(blood * 100 / 27) + '%');
         });
     });
+    </script>
 </body>
   
 
