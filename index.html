@@ -365,51 +365,83 @@
     }
 
     .bloodlist {
-        width: 100%;
-        background-color: #000;
-        height: 80%;
-    }
+    width: 100%;
+    height: 80%;
+    background-color: #000;
+  }
 
-    .bluelist {
-        width: 100%;
-        background-color: #50dcd8;
-        height: 20%;
-    }
+  .bluelist {
+    width: 100%;
+    height: 20%;
+    background-color: #50dcd8;
+    border: 1px solid #000;
+  }
 
-    .bloodone {
-        width: 100%;
-        height: 50%;
-        background-image: repeating-linear-gradient(to right, #1cba13 0px,
-                #1cba13 5px,
-                black 5px,
-                black 6px);
+  .bluesmlist {
+    width: 100%;
+    height: 20%;
+    background-color: #5191ca;
+    border: 1px solid #000;
+  }
 
-    }
+  .bloodone {
+    width: 100%;
+    height: 50%;
+    background-image: repeating-linear-gradient(to right, #1cba13 0,
+        #1cba13 5px,
+        black 5px,
+        black 6px);
 
-    .bloodone1 {
-        width: 100%;
-        height: 50%;
-        /* background-color: #1cba13; */
-        background-image: repeating-linear-gradient(to right, #1cba13 0px,
-                #1cba13 59px,
-                black 59px,
-                black 60px);
+  }
 
-    }
+  .bloodone1 {
+    width: 100%;
+    height: 50%;
 
-    .out {
-        display: flex;
-        justify-content: space-around;
-        width:80%;
-        margin:0 auto;
-      position:absolute;
-    left:0;
-    top:0;
-    }
-    .damage{
-     color:red;
-     font-size: 24px;
-    }
+    /* background-color: #1cba13; */
+    background-image: repeating-linear-gradient(to right, #1cba13 0,
+        #1cba13 59px,
+        black 59px,
+        black 60px);
+
+  }
+
+  .sm {
+    width: 100%;
+    height: 50%;
+    background-image: repeating-linear-gradient(to right, #faca5c 0,
+        #faca5c 5px,
+        black 5px,
+        black 6px);
+
+  }
+
+  .sm1 {
+    width: 100%;
+    height: 50%;
+
+    /* background-color: #1cba13; */
+    background-image: repeating-linear-gradient(to right, #faca5c 0,
+        #faca5c 59px,
+        black 59px,
+        black 60px);
+
+  }
+
+  .out {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    top: 100px;
+  }
+
+  .damage {
+    color: red;
+    font-size: 24px;
+  }
   </style>
 </head>
 
@@ -469,6 +501,10 @@
                     <input id="blue" type="range" min="0" max="27" value="27" />
                     <label for="blue" style='width: 50px;'>100%</label>
                 </div>
+              <div class="field-row" style="width: 400px">
+                <input type="checkbox" id="sm">
+                <label for="sm">色盲模式</label>
+              </div>
             </div>
         </div>
     </div>
@@ -499,6 +535,12 @@
 
             $('.bluelist').css('width', Math.round(blood * 100 / 27) + '%');
         });
+      $("#sm").change(function () {
+
+      $('.bloodone').toggleClass("sm");
+      $('.bloodone1').toggleClass("sm1");
+      $('.bluelist').toggleClass("bluesmlist");
+    });
     });
     </script>
 </body>
