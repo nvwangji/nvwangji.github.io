@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+  <meta charset="utf-8"> 
+  <title>chess</title> 
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<style>
+  canvas {
+    position: absolute;
+
+  }
+
+  #myCanvas {
+    background-color: #c89d72;
+  }
+
+  #myCanvas1 {
+    background-color: transparent;
+  }
+
+  #board {
+    position: absolute;
+    top: 28px;
+    left: 620px;
+    width: 400px;
+    height: 300px;
+    padding: 30px;
+  }
+
+  #board2 {
+    position: absolute;
+    top: 328px;
+    left: 620px;
+    width: 400px;
+    height: 300px;
+    padding: 30px;
+  }
+
+  #stage {
+    position: relative;
+    width: 600px;
+    height: 650px;
+    border: 2px solid black
+  }
+</style>
+
+<body>
+  <div id="stage">
+    <div class='canvas'>
+      <canvas id="myCanvas" width="600" height="650" style="border:1px solid #d3d3d3;"></canvas>
+    </div>
+    <div class='canvas'>
+      <canvas id="myCanvas1" width="600" height="650" style="border:1px solid #d3d3d3;"></canvas>
+    </div>
+  </div>
+
+  <div id='board'>
+    <p id='t1'>
+      当前覆盖坐标：
+    </p>
+    <p id='t2'>
+      当前点击坐标：
+    </p>
+    <p id='t3'>
+
+    </p>
+    <p id='t4'>
+
+    </p>
+
+  </div>
+  <div id='board2'>
+  </div>
+
+  <script>
+    let selectk = null;
+    let blackQ = [
+      ['車', '馬', '象', '士', '將', '士', '象', '馬', '車'],
+      ['', '', '', '', '', '', '', '', ''],
+      ['', '炮', '', '', '', '', '', '炮', ''],
+      ['卒', '', '卒', '', '卒', '', '卒', '', '卒'],
+      ['', '', '', '', '', '', '', '', '']
+    ];
+    //红
+    let redQ = [
+      ['車', '馬', '相', '仕', '帥', '仕', '相', '馬', '車'],
+      ['', '', '', '', '', '', '', '', ''],
+      ['', '炮', '', '', '', '', '', '炮', ''],
+      ['兵', '', '兵', '', '兵', '', '兵', '', '兵'],
+      ['', '', '', '', '', '', '', '', '']
+    ];
+    redQ = redQ.reverse();
+    allQ = blackQ.concat(redQ);
+    for (let i = 0; i < allQ.length; i++) {
+      for (let k = 0; k < allQ[i].length; k++) {
+        allQ[i][k] = {
+          v: allQ[i][k],
+          x: i,
+          y: k,
+          color: i < 5 ? 'black' : 'red'
+        }
+      }
+    }
+    selectArr = null;
+    srcArr = null;
+    desArr = null;
+    eatQ = [];
+    over = false;
+
+    function init() {
+      var c0 = document.getElementById("myCanvas");
+      var ctx = c0.getContext("2d");
+      let c1 = document.getElementById("myCanvas1");
+      var ctx1 = c1.getContext("2d");
+
+      draw(ctx);
+      drawQZ(ctx1);
+      c1.onmousemove = function (event) {
+        let z = getPointOnCanvas(event.target, event.pageX, event.pageY)
+        // console.log(event);
+        $('#t1').text(`当前覆盖坐标：x:${Math.round(z.x)},y:${Math.round(z.y)}`);
+      }
+
+      c1.onclick = function (event) {
+        if (over) {
+          location.reload();
+        }
+
+        let c = ctx1;
+        let z = getPointOnCanvas(event.target, event.pageX, event.pageY);
+        let x = z.x;
+        let y = z.y;
+
+
+        selectArr = allQ[Math.round(y / 50)][Math.round(x / 50)];
+        //两边按顺序走
+        // if (desArr) {
+        //   if (selectArr.color === desArr.color) {
+        //     return false;
+        //   }
+        // }
+        $('#t3').text(
+          `当前选择的棋子：name:${selectArr.color=='red'?'红':'黑'} ${selectArr.v},x:${selectArr.x},y:${selectArr.y}`);
+        if (srcArr) {
+          if (!selectArr) {
+            return;
+          } else {
+            desArr = selectArr;
+            console.log(srcArr, desArr);
+            // let color = selectArr.color;
+            // let go = '';
+            // let step = Math.abs(srcArr.x - desArr.x);
+            // let w = Math.abs(desArr.y - 9);
+            // if (color == 'black' && srcArr.x < desArr.x || color == 'red' && srcArr.x > desArr.x) {
+            //   go = '进';
+
+            // } else if (color == 'black' && srcArr.x > desArr.x || color == 'red' && srcArr.x < desArr.x) {
+            //   go = '退';
+            // } else {
+            //   go = '平';
+            // }
+            // $('#t4').text(color + selectArr.v + w + go + step);
+
+            if (desArr.color == srcArr.color && desArr.v != '') {
+
+              srcArr = selectArr;
+            } else {
+              if (!judge(srcArr, desArr)) return;
+              if (desArr.v != '') {
+                eatQ.push({
+                  color: desArr.color,
+                  value: desArr.v
+                });
+
+              }
+
+              //移动棋子、吃子
+              allQ[desArr.x][desArr.y].v = srcArr.v;
+              allQ[desArr.x][desArr.y].color = srcArr.color;
+              allQ[srcArr.x][srcArr.y].v = '';
+              console.log(desArr);
+              // allQ[srcArr.x][srcArr.y].color = srcArr.color;
+              srcArr = null;
+              //desArr = null;
+            }
+            console.log(eatQ);
+            $('#board2').empty();
+            for (let i = 0; i < eatQ.length; i++) {
+              let div = `<div
+                style='color:${eatQ[i].color};width:50px;height:50px;line-height:50px;text-align:center;border-radius:50px;border:1px
+                double
+                black;float:left;font-weight:bold;margin:5px;background-color:${eatQ[i].color=='red'?'lightgreen':'lightblue'}'>
+                ${eatQ[i].value}
+                <div>`;
+              $('#board2').append(div);
+            }
+            setTimeout(() => {
+              if (eatQ.length > 0) {
+                ctx1.font = "bold 20px Verdana";
+                // console.log(eatQ[eatQ.length - 1])
+                if (eatQ[eatQ.length - 1].value === '帥') {
+                  ctx1.fillStyle = 'black';
+                  ctx1.fillText(`Game Over!黑棋胜！`, 225, 325);
+                  over = true;
+                  return;
+                }
+                if (eatQ[eatQ.length - 1].value === '將') {
+                  ctx1.fillStyle = 'Salmon';
+                  ctx1.fillText(`Game Over!红棋胜！`, 225, 325);
+                  over = true;
+                  return;
+                }
+              }
+            }, 100);
+
+
+          }
+
+        } else {
+          if (!selectArr || selectArr.v == '') {
+            return;
+          } else {
+            srcArr = selectArr;
+          }
+        }
+        // console.log(allQ);
+        drawQZ(c);
+        c.save();
+        $('#t2').text(`当前点击坐标：x:${Math.round(z.x)},y:${Math.round(z.y)}`);
+        c.beginPath(); //新建一条path
+        console.log(Math.round(x / 50), Math.round(y / 50));
+        if (Math.round(x / 50) > -1 && Math.round(y / 50) > -1 && (x / 50) < 8 && Math.round(y / 50) < 10) {
+          ctx1.save();
+          ctx1.translate(100, 100);
+          ctx1.lineWidth = "4";
+          ctx1.strokeStyle = "red";
+          ctx1.setLineDash([25, 25]); // [实线长度, 间隙长度]
+          ctx1.lineDashOffset = 12.5;
+          ctx1.rect(Math.round(x / 50) * 50 - 25, Math.round(y / 50) * 50 - 25, 50, 50);
+          ctx1.stroke();
+          ctx1.stroke();
+          c.restore();
+        }
+        selectArr = null;
+
+      }
+
+    }
+    /*
+     *画棋盘
+     */
+    function draw(ctx) {
+      ctx.translate(100, 100);
+      //1.棋盘
+      ctx.font = "30px 楷体";
+      ctx.beginPath(); //新建一条path
+      for (let i = 0; i < 9; i++) {
+
+        for (let j = 0; j < 10; j++) {
+          ctx.moveTo(i * 50, j * 50); //把画笔移动到指定的坐标
+          ctx.lineTo(400, j * 50); //绘制一条从当前位置到指定坐标(200, 50)的直线.
+          ctx.moveTo(i * 50, j * 50); //把画笔移动到指定的坐标
+          ctx.lineTo(i * 50, 450); //绘制一条从当前位置到指定坐标(200, 50)的直线.
+        }
+      }
+
+      //2.士线
+      ctx.moveTo(150, 0); //
+      ctx.lineTo(250, 100);
+      ctx.moveTo(250, 0); //
+      ctx.lineTo(150, 100);
+      ctx.moveTo(150, 450); //
+      ctx.lineTo(250, 350);
+      ctx.moveTo(250, 450); //
+      ctx.lineTo(150, 350);
+      ctx.closePath();
+      ctx.stroke(); //绘制路径。
+      ctx.clearRect(0, 200, 400, 50);
+      ctx.textBaseline = "middle";
+      //ctx.fillStyle='red';
+      ctx.fillText("楚河", 50, 225);
+      ctx.fillText("漢界", 300, 225);
+
+    }
+    /*
+     *画棋子
+     */
+    function drawQZ(ctx) {
+      //3.棋子
+      //黑
+      ctx.clearRect(0, 0, 600, 650);
+      ctx.save();
+      ctx.translate(100, 100);
+      ctx.font = "30px 楷体";
+      ctx.textBaseline = "middle";
+      for (let i = 0; i < allQ.length; i++) {
+        for (let k = 0; k < allQ[i].length; k++) {
+          ctx.beginPath();
+          if (allQ[i][k].v != '') {
+            ctx.arc(50 * k, 50 * i, 25, 0, 2 * Math.PI);
+            if (allQ[i][k].color == 'black') {
+              ctx.fillStyle = "lightblue";
+              ctx.fill();
+              ctx.fillStyle = 'black';
+              ctx.fillText(allQ[i][k].v, 50 * k - 14, 50 * i);
+            } else {
+              ctx.fillStyle = "lightgreen";
+              ctx.fill();
+              ctx.fillStyle = 'red';
+              ctx.fillText(allQ[i][k].v, 50 * k - 14, 50 * i);
+            }
+
+            ctx.stroke();
+          } else {
+
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function getPointOnCanvas(canvas, x, y) {
+      var bbox = canvas.getBoundingClientRect();
+      return {
+        x: x - bbox.left * (canvas.width / bbox.width) - 100,
+        y: y - bbox.top * (canvas.height / bbox.height) - 100
+      };
+    }
+    //move rules
+    function judge(srcArr, desArr) {
+      switch (srcArr.v) {
+        case '馬':
+          if (Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '相':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 8) || desArr.x < 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '象':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 8) || desArr.x > 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '仕':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 2) || desArr.x <
+            2 || desArr.y < 3 || desArr.y > 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '士':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 2) || desArr.x >
+            2 || desArr.y < 3 || desArr.y > 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '帥':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 1) || desArr.x < 7 ||
+            desArr.y < 3 || desArr.y > 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '將':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 1) || desArr.x >
+            2 || desArr.y < 3 || desArr.y > 5) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '兵':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 1) || desArr.x > srcArr.x) {
+            return false;
+          } else if (srcArr.x > 4 && desArr.y != srcArr.y) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '卒':
+          if ((Math.pow((desArr.x - srcArr.x), 2) + Math.pow((desArr.y - srcArr.y), 2) != 1) || desArr.x <
+            srcArr.x) {
+            return false;
+          } else if (srcArr.x < 5 && desArr.y != srcArr.y) {
+            return false;
+          } else {
+            return true;
+          }
+          break;
+        case '車':
+          if (desArr.x != srcArr.x && desArr.y != srcArr.y) {
+            return false;
+          } else {
+            if (desArr.x == srcArr.x) {
+              for (let i = Math.min(srcArr.y, desArr.y) + 1; i < Math.max(srcArr.y, desArr.y); i++) {
+                if (allQ[desArr.x][i].v != '') {
+                  return false
+                }
+              }
+            } else if (desArr.y == srcArr.y) {
+              for (let i = Math.min(srcArr.x, desArr.x) + 1; i < Math.max(srcArr.x, desArr.x); i++) {
+                if (allQ[i][desArr.y].v != '') {
+                  return false
+                }
+              }
+            }
+            return true;
+          }
+          break;
+        case '炮':
+          let gap = [];
+          if (desArr.x != srcArr.x && desArr.y != srcArr.y) {
+            return false;
+          } else {
+            if (desArr.x == srcArr.x) {
+              for (let i = Math.min(srcArr.y, desArr.y) + 1; i < Math.max(srcArr.y, desArr.y); i++) {
+                if (allQ[desArr.x][i].v != '') {
+                  gap.push(allQ[desArr.x][i])
+
+                }
+              }
+            } else if (desArr.y == srcArr.y) {
+              for (let
+                  i = Math.min(srcArr.x, desArr.x) + 1; i < Math.max(srcArr.x, desArr.x); i++) {
+                if (allQ[i][desArr.y].v != '') {
+                  gap.push(allQ[desArr.x][i])
+                }
+              }
+            }
+            console.log('gap', gap);
+            if (gap.length == 0 && allQ[desArr.x][desArr.y].v != '') {
+              return false;
+            }
+            if (gap.length == 1 && allQ[desArr.x][desArr.y].v == '') {
+              return false;
+            }
+            if (gap.length > 1) return false;
+            return true;
+          }
+          break;
+        default:
+          return true;
+          break;
+      }
+    }
+
+    function deepcopy(obj) {
+
+      var out = [],
+        i = 0,
+        len = obj.length;
+
+      for (; i < len; i++) {
+        if (obj[i] instanceof Array) {
+          out[i] = deepcopy(obj[i]);
+        } else out[i] = obj[i];
+      }
+      return out;
+    }
+
+
+    $(document).ready(function () {
+      init();
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Jcanvas</title>
+  <script src="./jquery3.3.1.js"></script>
+  <script src="./jcanvas.min.js"></script>
+</head>
+<style>
+  canvas {
+    display: block;
+    margin: 50px auto;
+  }
+  body{
+    width:100%;
+    height:100%;
+    background-color: #000;
+   
+  }
+</style>
+
+<body>
+
+  <canvas id="myCanvas" width="610" height="610"> 你的浏览器不支持 HTML5 canvas 标签。</canvas>
+
+</body>
+<script>
+  var $myCanvas = $('#myCanvas');
+
+  // rectangle shape 
+
+  function draw() {
+    $myCanvas.clearCanvas();
+    for (let i = 0; i < 60; i++) {
+      $myCanvas.rotateCanvas({
+        rotate: 6,
+        x: 300,
+        y: 300
+      }).drawLine({
+        strokeStyle: i % 5 == 4 ? 'red' : 'blue',
+        strokeWidth: i % 5 == 4 ? 15 : 5,
+        //  rounded: true,
+        closed: true,
+        x1: i % 5 == 4 ? 570 : 580,
+        y1: 300,
+        x2: 600,
+        y2: 300,
+
+      })
+      if(i%5==4){
+          $myCanvas.rotateCanvas({
+          rotate: -90,
+          x: 300,
+          y: 300
+          }).drawText({
+          text: Math.round(i/5),
+          fontFamily: 'cursive',
+          fontSize: 30,
+          x: 550, y: 300,
+          fillStyle: 'white',
+          strokeStyle: 'lightblue',
+          strokeWidth: 3,
+          rotate: 90-(Math.round(i/5))*30
+      }).restoreCanvas();
+      }
+
+    }
+    let now = new Date();
+    let h = now.getHours();
+    let m = now.getMinutes();
+    let s = now.getSeconds();
+    console.log(h, m, s);
+    $myCanvas.drawArc({
+      // draw the face
+
+      strokeStyle: '#333',
+      strokeWidth: 5,
+      x: 300,
+      y: 300,
+      radius: 300
+    }).rotateCanvas({
+       rotate: 360 / 12 * h+m/2,
+       x: 300,
+       y: 300
+    }).drawLine({
+      strokeStyle: 'green',
+      strokeWidth: 20,
+      rounded: true,
+      closed: true,
+      x1: 300,
+      y1: 320,
+      x2: 300,
+      y2: 90,
+    }).restoreCanvas().rotateCanvas({
+      rotate: 6 * m+s/60,
+      x: 300,
+      y: 300
+    }).drawLine({
+      strokeStyle: 'yellow',
+      strokeWidth: 12,
+      //  rounded: true,
+      closed: true,
+      x1: 300,
+      y1: 350,
+      x2: 300,
+      y2: 70,
+
+    }).restoreCanvas().rotateCanvas({
+      rotate: 6 * s,
+      x: 300,
+      y: 300
+    }).drawLine({
+      strokeStyle: 'steelblue',
+      strokeWidth: 6,
+      // rounded: true,
+      closed: true,
+      x1: 300,
+      y1: 400,
+      x2: 300,
+      y2: 20,
+    }).restoreCanvas();
+    window.requestAnimationFrame(draw);
+  }
+
+  /*  setInterval(() => {
+     draw();
+   }, 1000); */
+  window.requestAnimationFrame(draw);
+</script>
+
+</html>
