@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Jcanvas</title>
+  <script src="./jquery3.3.1.js"></script>
+  <script src="./jcanvas.min.js"></script>
+</head>
+<style>
+  canvas {
+    display: block;
+    margin: 50px auto;
+    border: 1px solid #999;
+  }
+
+  body {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+
+  }
+
+  .btn {
+    width: 200px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .btn button {
+    width: 80px;
+    height: 30px;
+    background-color: aquamarine;
+  }
+</style>
+
+<body>
+
+  <canvas id="myCanvas" width="1600" height="800"></canvas>
+
+</body>
+<script>
+  class ball {
+    r = 50;
+    a = 0.05;
+    constructor() {
+
+    }
+    move(r, a) {
+      //this.r += 50;
+      this.a += 0.01;
+    }
+
+  }
+  let nball = new ball();
+  var $myCanvas = $('#myCanvas');
+
+  function drawjinkou() {
+    nball.move();
+    $myCanvas.translateCanvas({
+        translateX: 800,
+        translateY: 400
+      })
+      .drawArc({
+        fillStyle: '#fefef6',
+        x: 0,
+        y: 0,
+        radius: 20,
+      }).drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 50,
+      }).drawArc({
+        fillStyle: 'lightblue',
+        x: 50 * Math.cos(nball.a * 0.9),
+        y: 50 * Math.sin(nball.a * 0.9),
+        radius: 5,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 100,
+      }).drawArc({
+        fillStyle: 'white',
+        x: 100 * Math.cos(nball.a * 0.8),
+        y: 100 * Math.sin(nball.a * 0.8),
+        radius: 7,
+      }).drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 150,
+      }).drawArc({
+        fillStyle: 'blue',
+        x: 150 * Math.cos(nball.a * 0.7),
+        y: 150 * Math.sin(nball.a * 0.7),
+        radius: 12,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 200,
+      }).drawArc({
+        fillStyle: 'orange',
+        x: 200 * Math.cos(nball.a * 0.6),
+        y: 200 * Math.sin(nball.a * 0.6),
+        radius: 8,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 250,
+      }).drawArc({
+        fillStyle: 'pink',
+        x: 250 * Math.cos(nball.a * 0.5),
+        y: 250 * Math.sin(nball.a * 0.5),
+        radius: 15,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 300,
+      }).drawArc({
+        fillStyle: 'lightgreen',
+        x: 300 * Math.cos(nball.a * 0.4),
+        y: 300 * Math.sin(nball.a * 0.4),
+        radius: 18,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 350,
+      }).drawArc({
+        fillStyle: 'azure',
+        x: 350 * Math.cos(nball.a * 0.3),
+        y: 350 * Math.sin(nball.a * 0.3),
+        radius: 14,
+      })
+      .drawArc({
+        strokeWidth: 1,
+        strokeStyle: '#999999',
+        strokeDash: [3],
+        x: 0,
+        y: 0,
+        radius: 400,
+      }).drawArc({
+        fillStyle: 'gray',
+        x: 400 * Math.cos(nball.a * 0.2),
+        y: 400 * Math.sin(nball.a * 0.2),
+        radius: 14,
+      })
+      .restoreCanvas()
+
+
+  }
+
+
+  function go() {
+    $myCanvas.clearCanvas();
+    drawjinkou();
+    myReq = window.requestAnimationFrame(go);
+  }
+  requestAnimationFrame(go);
+</script>
+
+</html>
