@@ -61,7 +61,8 @@
   </div>
 </body>
 <script>
-  let bx = 400,by = 300,isClub = true,apha = 0,xx = 1,f=1;
+  let bx = Math.floor(Math.random()*800+100),by = Math.floor(Math.random()*300+100),isClub = true,apha = 0,xx
+  = 1,f=1;
   class ball {
     constructor(x = bx, y = by ,f = 1) {
       this.x = x;
@@ -81,9 +82,9 @@
     }
     speed() {
       if (this.vx != 0 && this.vy != 0) {
-        this.vx = this.vx * 0.995;
-        this.vy = this.vy * 0.995;
-        if (Math.abs(this.vx) < 0.1 && Math.abs(this.vy) < 0.1) {
+        this.vx = this.vx * 0.99;
+        this.vy = this.vy * 0.99;
+        if (Math.abs(this.vx) < 0.001 && Math.abs(this.vy) < 0.001) {
           this.vx = 0;
           this.vy = 0;
           isClub = true;      
