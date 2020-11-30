@@ -45,7 +45,13 @@
     user-select: none;
 
   }
-
+  html{
+    width:100%;
+    height:100%;
+    background: url(https://wallpaperm.cmcm.com/c8ffebd0dcf7b1b80a0ea46ba07ce43f.jpg);
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+  }
   #screen {
     width: 1200px;
     height: 300px;
@@ -210,8 +216,6 @@
   .left {
     width: 780px;
     height: 100%;
-    /* background-color: aquamarine; */
-
   }
 
   .mid {
@@ -350,13 +354,18 @@
     width: 15px;
     height: 15px;
     border-radius: 14px;
-    background-color: #000;
-    border: 1px #000 outset;
+    background-color: darkolivegreen;
+    border: 1px darkolivegreen outset;
   }
 
   .on {
     background-color: chartreuse;
-    border: 1px green outset;
+    border: 1px chartreuse outset;
+  }
+
+  #aud {
+    display: none;
+
   }
 </style>
 
@@ -364,6 +373,7 @@
   <div id='screen'>
 
   </div>
+  <audio id='aud' src='./183.mp3'></audio>
   <div id="app">
     <div class='left'>
       <div class='funkey'>
@@ -401,42 +411,42 @@
         <div class='key back'>Backspace</div>
 
         <div class='key tab'>Tab</div>
-        <div class='key'>Q</div>
-        <div class='key'>W</div>
-        <div class='key'>E</div>
-        <div class='key'>R</div>
-        <div class='key'>T</div>
-        <div class='key'>Y</div>
-        <div class='key'>U</div>
-        <div class='key'>I</div>
-        <div class='key'>O</div>
-        <div class='key'>P</div>
+        <div class='key' style='background-color: #FDC7D7;border-color: #FDC7D7;'>Q</div>
+        <div class='key' style='background-color: #FFD5CE;border-color: #FFD5CE;'>W</div>
+        <div class='key' style='background-color: #FAD7AF;border-color: #FAD7AF;'>E</div>
+        <div class='key' style='background-color: #FAEA9F;border-color: #FAEA9F;'>R</div>
+        <div class='key' style='background-color: #E0F4AD;border-color: #E0F4AD;'>T</div>
+        <div class='key' style='background-color: #C0F8CB;border-color: #C0F8CB;'>Y</div>
+        <div class='key' style='background-color: #AAF4E5;border-color: #AAF4E5;'>U</div>
+        <div class='key' style='background-color: #B6F0F4;border-color: #B6F0F4;'>I</div>
+        <div class='key' style='background-color: #E7C0F5;border-color: #E7C0F5;'>O</div>
+        <div class='key' style='background-color: #FDC7D7;border-color: #FDC7D7;'>P</div>
         <div class='key'>[</div>
         <div class='key'>]</div>
         <div class='key tab'>\</div>
 
-        <div class='key caps'>Caps Lock</div>
-        <div class='key'>A</div>
-        <div class='key'>S</div>
-        <div class='key'>D</div>
-        <div class='key'>F</div>
-        <div class='key'>G</div>
-        <div class='key'>H</div>
-        <div class='key'>J</div>
-        <div class='key'>K</div>
-        <div class='key'>L</div>
+        <div class='key caps'>CapsLock</div>
+        <div class='key' style='background-color: #FDC7D7;border-color: #FDC7D7;'>A</div>
+        <div class='key' style='background-color: #FFD5CE;border-color: #FFD5CE;'>S</div>
+        <div class='key' style='background-color: #FAD7AF;border-color: #FAD7AF;'>D</div>
+        <div class='key' style='background-color: #FAEA9F;border-color: #FAEA9F;'>F</div>
+        <div class='key' style='background-color: #E0F4AD;border-color: #E0F4AD;'>G</div>
+        <div class='key' style='background-color: #C0F8CB;border-color: #C0F8CB;'>H</div>
+        <div class='key' style='background-color: #AAF4E5;border-color: #AAF4E5;'>J</div>
+        <div class='key' style='background-color: #B6F0F4;border-color: #B6F0F4;'>K</div>
+        <div class='key' style='background-color: #E7C0F5;border-color: #E7C0F5;'>L</div>
         <div class='key'>;</div>
         <div class='key'>'</div>
         <div class='key enter'>Enter</div>
-
+ 
         <div class='key shift'>Shift</div>
-        <div class='key'>Z</div>
-        <div class='key'>X</div>
-        <div class='key'>C</div>
-        <div class='key'>V</div>
-        <div class='key'>B</div>
-        <div class='key'>N</div>
-        <div class='key'>M</div>
+        <div class='key' style='background-color: #FDC7D7;border-color: #FDC7D7;'>Z</div>
+        <div class='key' style='background-color: #FFD5CE;border-color: #FFD5CE;'>X</div>
+        <div class='key' style='background-color: #FAD7AF;border-color: #FAD7AF;'>C</div>
+        <div class='key' style='background-color: #FAEA9F;border-color: #FAEA9F;'>V</div>
+        <div class='key' style='background-color: #E0F4AD;border-color: #E0F4AD;'>B</div>
+        <div class='key' style='background-color: #C0F8CB;border-color: #C0F8CB;'>N</div>
+        <div class='key' style='background-color: #AAF4E5;border-color: #AAF4E5;'>M</div>
         <div class='key'>,</div>
         <div class='key'>.</div>
         <div class='key'>/</div>
@@ -486,13 +496,13 @@
     <div class='right'>
       <div class='funkey'>
         <div class='key hide'></div>
-        <div class='key'>Print Screen</div>
-        <div class='key'>Scroll Lock</div>
-        <div class='key'>Pause Break</div>
+        <div class='key'>Print<br>Screen</div>
+        <div class='key'>Scroll<br>Lock</div>
+        <div class='key'>Pause<br>Break</div>
       </div>
       <div class='mainkey'>
         <div class='ll'>
-          <div class='key'>Num Lock</div>
+          <div class='key'>Num<br>Lock</div>
           <div class='key'>/</div>
           <div class='key'>*</div>
           <div class='key'>7</div>
@@ -520,6 +530,11 @@
   <script>
     $(document).ready(function () {
       $("body").keydown(function (event) {
+        console.log($('#aud')[0].paused)
+        if (!$('#aud')[0].paused) {
+          $('#aud')[0].load();
+        }
+        $('#aud')[0].play();
         $('#screen').css('color', '#00ff00');
         event.preventDefault();
         let str = $('#screen').text();
@@ -531,10 +546,10 @@
           } catch (error) {
             $('#screen').css('color', 'red');
             $('#screen').text('非法数学式');
-            
+
           }
-        } else if(event.key === 'Delete'){
-            $('#screen').text('');
+        } else if (event.key === 'Delete') {
+          $('#screen').text('');
         } else {
           $('#screen').text($('#screen').text() + event.key);
         }
@@ -566,9 +581,29 @@
 
       })
       $(".key").mousedown(function (event) {
+        if (!$('#aud')[0].paused) {
+        $('#aud')[0].load();
+        }
+        $('#aud')[0].play();
         event.stopPropagation()
-        // let key = $(this)[0].innerText;
-        $('#screen').text($('#screen').text() + $(this)[0].innerText);
+        let key = $(this)[0].innerText;
+        let str = $('#screen').text();
+        if (key === 'Backspace') {
+          $('#screen').text(str.substr(0, str.length - 1))
+        } else if (key === 'Enter') {
+          try {
+            $('#screen').text(eval(str));
+          } catch (error) {
+            $('#screen').css('color', 'red');
+            $('#screen').text('非法数学式');
+
+          }
+        } else if (key === 'Delete') {
+          $('#screen').text('');
+        } else {
+          $('#screen').text($('#screen').text() + $(this)[0].innerText);
+        }
+
         $(this).addClass('sel');
       });
       $(".key").mouseup(function (event) {
