@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>keyboard</title>
+  <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+</head>
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+
+<script>
+  L2Dwidget.init({
+    "model": {
+      jsonPath: "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+      "scale": 1
+    },
+    "display": {
+      "position": "left", //看板娘的表现位置
+      "width": 150, //小萝莉的宽度
+      "height": 300, //小萝莉的高度
+      "hOffset": 0,
+      "vOffset": -20
+    },
+    "mobile": {
+      "show": true,
+      "scale": 0.5
+    },
+    "react": {
+      "opacityDefault": 0.7,
+      "opacityOnHover": 0.2
+    }
+  });
+</script>
+<style>
+  * {
+    box-sizing: border-box;
+    -moz-user-select: none;
+    /*火狐*/
+    -webkit-user-select: none;
+    /*webkit浏览器*/
+    -ms-user-select: none;
+    /*IE10*/
+    -khtml-user-select: none;
+    /*早期浏览器*/
+    user-select: none;
+
+  }
+
+  #screen {
+    width: 1200px;
+    height: 300px;
+    border: 1px #000 solid;
+    background-color: #000;
+    color: #00ff00;
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 50px auto;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 10px;
+    word-break: break-all;
+    letter-spacing: 4px;
+    line-height: 110%;
+  }
+
+  #app {
+    width: 1200px;
+    height: 380px;
+    border: 1px #000 solid;
+    margin: 100px auto;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 10px;
+    word-break: break-all;
+    font-weight: bold;
+    background-image: linear-gradient(to right, lightblue, violet);
+    box-shadow: 10px 10px 5px #888888;
+  }
+
+  @keyframes myfirst {
+    0% {
+      background: red;
+    }
+
+    17% {
+      background: orange;
+    }
+
+    34% {
+      background: yellow;
+    }
+
+    51% {
+      background: green;
+    }
+
+    68% {
+      background: lightblue;
+    }
+
+    85% {
+      background: indigo;
+    }
+
+    100% {
+      background: violet;
+    }
+  }
+
+  @-moz-keyframes myfirst
+
+  /* Firefox */
+    {
+    0% {
+      background: red;
+    }
+
+    17% {
+      background: orange;
+    }
+
+    34% {
+      background: yellow;
+    }
+
+    51% {
+      background: green;
+    }
+
+    68% {
+      background: lightblue;
+    }
+
+    85% {
+      background: indigo;
+    }
+
+    100% {
+      background: violet;
+    }
+  }
+
+  @-webkit-keyframes myfirst
+
+  /* Safari and Chrome */
+    {
+    0% {
+      background: red;
+    }
+
+    17% {
+      background: orange;
+    }
+
+    34% {
+      background: yellow;
+    }
+
+    51% {
+      background: green;
+    }
+
+    68% {
+      background: lightblue;
+    }
+
+    85% {
+      background: indigo;
+    }
+
+    100% {
+      background: violet;
+    }
+  }
+
+  @-o-keyframes myfirst
+
+  /* Opera */
+    {
+    0% {
+      background: red;
+    }
+
+    17% {
+      background: orange;
+    }
+
+    34% {
+      background: yellow;
+    }
+
+    51% {
+      background: green;
+    }
+
+    68% {
+      background: lightblue;
+    }
+
+    85% {
+      background: indigo;
+    }
+
+    100% {
+      background: violet;
+    }
+  }
+
+  .left {
+    width: 780px;
+    height: 100%;
+    /* background-color: aquamarine; */
+
+  }
+
+  .mid {
+    width: 170px;
+    height: 100%;
+    /* background-color: beige; */
+    margin: 0 auto;
+  }
+
+  .right {
+    width: 250px;
+    height: 100%;
+    /* background-color: chocolate; */
+    margin: 0 auto;
+  }
+
+  .funkey {
+    width: 100%;
+    height: 84px;
+    display: flex;
+    padding: 15px 8px 0;
+
+  }
+
+  .mainkey {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 2px;
+  }
+
+  .mid .mainkey {
+    padding: 5px 6px;
+  }
+
+  .right .mainkey {
+    padding: 5px 8px;
+  }
+
+  .key {
+    width: 52px;
+    height: 52px;
+    border: 5px solid cornsilk;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1px;
+    font-size: 12px;
+    text-align: center;
+    background-color: cornsilk;
+    border-radius: 4px;
+    border-style: outset;
+  }
+
+  /*   .key:hover{
+    background-color: cyan;
+  } */
+  .funkey .gap {
+    margin-left: 22px;
+  }
+
+  .back {
+    width: 96px;
+  }
+
+  .tab {
+    width: 74px;
+  }
+
+  .caps {
+    width: 82px;
+  }
+
+  .enter {
+    width: 118px;
+  }
+
+  .shift {
+    width: 126px;
+  }
+
+  .ctrl {
+    width: 60px;
+  }
+
+  .space {
+    width: 352px;
+  }
+
+  .hide {
+    visibility: hidden;
+  }
+
+  .ll {
+    width: 156px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .rr {
+    width: 52px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .zero {
+    width: 104px;
+  }
+
+  .plus {
+    height: 105px;
+  }
+
+  .sel {
+    background-color: cyan;
+    border-style: inset;
+    color: #fff;
+  }
+
+  .light {
+    font-size: 10px;
+    white-space: pre-line;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+  }
+
+  .off {
+    width: 15px;
+    height: 15px;
+    border-radius: 14px;
+    background-color: #000;
+    border: 1px #000 outset;
+  }
+
+  .on {
+    background-color: chartreuse;
+    border: 1px green outset;
+  }
+</style>
+
+<body>
+  <div id='screen'>
+
+  </div>
+  <div id="app">
+    <div class='left'>
+      <div class='funkey'>
+        <div class='key'>ESC</div>
+
+        <div class='key gap'>F1</div>
+        <div class='key'>F2</div>
+        <div class='key'>F3</div>
+        <div class='key'>F4</div>
+
+        <div class='key gap'>F5</div>
+        <div class='key'>F6</div>
+        <div class='key'>F7</div>
+        <div class='key'>F8</div>
+
+        <div class='key gap'>F9</div>
+        <div class='key'>F10</div>
+        <div class='key'>F11</div>
+        <div class='key'>F12</div>
+      </div>
+      <div class='mainkey'>
+        <div class='key'>`</div>
+        <div class='key gap'>1</div>
+        <div class='key'>2</div>
+        <div class='key'>3</div>
+        <div class='key'>4</div>
+        <div class='key'>5</div>
+        <div class='key'>6</div>
+        <div class='key'>7</div>
+        <div class='key'>8</div>
+        <div class='key'>9</div>
+        <div class='key'>0</div>
+        <div class='key'>-</div>
+        <div class='key'>=</div>
+        <div class='key back'>Backspace</div>
+
+        <div class='key tab'>Tab</div>
+        <div class='key'>Q</div>
+        <div class='key'>W</div>
+        <div class='key'>E</div>
+        <div class='key'>R</div>
+        <div class='key'>T</div>
+        <div class='key'>Y</div>
+        <div class='key'>U</div>
+        <div class='key'>I</div>
+        <div class='key'>O</div>
+        <div class='key'>P</div>
+        <div class='key'>[</div>
+        <div class='key'>]</div>
+        <div class='key tab'>\</div>
+
+        <div class='key caps'>Caps Lock</div>
+        <div class='key'>A</div>
+        <div class='key'>S</div>
+        <div class='key'>D</div>
+        <div class='key'>F</div>
+        <div class='key'>G</div>
+        <div class='key'>H</div>
+        <div class='key'>J</div>
+        <div class='key'>K</div>
+        <div class='key'>L</div>
+        <div class='key'>;</div>
+        <div class='key'>'</div>
+        <div class='key enter'>Enter</div>
+
+        <div class='key shift'>Shift</div>
+        <div class='key'>Z</div>
+        <div class='key'>X</div>
+        <div class='key'>C</div>
+        <div class='key'>V</div>
+        <div class='key'>B</div>
+        <div class='key'>N</div>
+        <div class='key'>M</div>
+        <div class='key'>,</div>
+        <div class='key'>.</div>
+        <div class='key'>/</div>
+        <div class='key shift'>Shift</div>
+
+        <div class='key ctrl'>Ctrl</div>
+        <div class='key ctrl'>Win</div>
+        <div class='key ctrl'>Alt</div>
+        <div class='key space'> </div>
+        <div class='key ctrl'>Alt</div>
+        <div class='key ctrl'>Win</div>
+        <div class='key ctrl'>Note</div>
+        <div class='key ctrl'>Ctrl</div>
+      </div>
+    </div>
+    <div class='mid'>
+      <div class='funkey'>
+        <div class='light'>
+          <div id='nl' class='off'></div>Num<br>Lock
+        </div>
+        <div class='light'>
+          <div id='cl' class='off'></div>Caps<br>Lock
+        </div>
+        <div class='light'>
+          <div id='sl' class='off'></div>Scroll<br>Lock
+        </div>
+      </div>
+      <div class='mainkey'>
+        <div class='key'>Insert</div>
+        <div class='key'>Home</div>
+        <div class='key'>Page Up</div>
+        <div class='key'>Delete</div>
+        <div class='key'>End</div>
+        <div class='key'>Page Down</div>
+
+        <div class='key hide'></div>
+        <div class='key hide'></div>
+        <div class='key hide'></div>
+        <div class='key hide'></div>
+        <div class='key'>↑</div>
+        <div class='key hide'></div>
+        <div class='key'>←</div>
+        <div class='key'>↓</div>
+        <div class='key'>→</div>
+      </div>
+    </div>
+    <div class='right'>
+      <div class='funkey'>
+        <div class='key hide'></div>
+        <div class='key'>Print Screen</div>
+        <div class='key'>Scroll Lock</div>
+        <div class='key'>Pause Break</div>
+      </div>
+      <div class='mainkey'>
+        <div class='ll'>
+          <div class='key'>Num Lock</div>
+          <div class='key'>/</div>
+          <div class='key'>*</div>
+          <div class='key'>7</div>
+          <div class='key'>8</div>
+          <div class='key'>9</div>
+          <div class='key'>4</div>
+          <div class='key'>5</div>
+          <div class='key'>6</div>
+          <div class='key'>1</div>
+          <div class='key'>2</div>
+          <div class='key'>3</div>
+          <div class='key zero'>0</div>
+          <div class='key'>.</div>
+        </div>
+        <div class='rr'>
+          <div class='key'>-</div>
+          <div class='key plus'>+</div>
+          <div class='key plus'>Enter</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $("body").keydown(function (event) {
+        $('#screen').css('color', '#00ff00');
+        event.preventDefault();
+        let str = $('#screen').text();
+        if (event.key === 'Backspace') {
+          $('#screen').text(str.substr(0, str.length - 1))
+        } else if (event.key === 'Enter') {
+          try {
+            $('#screen').text(eval(str));
+          } catch (error) {
+            $('#screen').css('color', 'red');
+            $('#screen').text('非法数学式');
+            
+          }
+        } else if(event.key === 'Delete'){
+            $('#screen').text('');
+        } else {
+          $('#screen').text($('#screen').text() + event.key);
+        }
+
+        console.log(event.key);
+        ///light
+        if (event.key === 'NumLock') {
+          $('#nl').toggleClass("on");
+        }
+        if (event.key === 'CapsLock') {
+          $('#cl').toggleClass("on");
+        }
+        if (event.key === 'ScrollLock') {
+          $('#sl').toggleClass("on");
+        }
+        $(".key").each(function () {
+          if ($(this).text().toUpperCase() === event.key.toUpperCase()) {
+            $(this).addClass('sel')
+          } else {
+            $(this).removeClass('sel');
+          }
+
+        });
+
+      });
+      $("body").keyup(function (event) {
+        event.preventDefault();
+        $(".key").removeClass('sel');
+
+      })
+      $(".key").mousedown(function (event) {
+        event.stopPropagation()
+        // let key = $(this)[0].innerText;
+        $('#screen').text($('#screen').text() + $(this)[0].innerText);
+        $(this).addClass('sel');
+      });
+      $(".key").mouseup(function (event) {
+        event.stopPropagation()
+        $('.key').removeClass('sel');
+      });
+      //添加彩虹键盘
+      //$('#app').css('background-image',`linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)`)
+    });
+  </script>
+</body>
+
+</html>
