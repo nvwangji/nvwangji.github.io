@@ -1,0 +1,242 @@
+<html>
+
+<head>
+  <title>My first three.js app</title>
+  <script src="https://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+  <script src='./punk.js'></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+  <style>
+    :root {
+      --red: #D6676D;
+      --blue: #19E8E7;
+      --pink: #C018EF;
+      --orange: #E29730;
+      --lightblue: #B9FDFC;
+      --white: #eee;
+      --lightorange: #6B5464;
+      --redr: #303263;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    #main {
+      width: 500px;
+      height: 500px;
+      border: 1px solid var(--red);
+      border-top: none;
+      box-sizing: border-box;
+      background-image: linear-gradient(to right, #661619, #0B1016);
+      position: absolute;
+    }
+
+    .bar {
+      color: var(--blue);
+      background-color: var(--lightblue);
+      text-align: center;
+      width: 100%;
+      height: 28px;
+      line-height: 28px;
+      font-weight: bold;
+      border: 1px solid var(--blue);
+      cursor: move;
+    }
+
+    .body {
+      padding: 20px;
+    }
+
+    hr {
+      background-color: var(--red)
+    }
+
+    .error {
+      color: var(--red);
+
+    }
+
+    .btn div {
+      border: 2px solid var(--blue);
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 30px;
+      color: var(--blue);
+      display: inline-block;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .btn span {
+      color: var(--red);
+      cursor: pointer;
+    }
+
+    .msgbody {
+      width: 100%;
+      height: 60%;
+      display: flex;
+
+    }
+
+    .picture {
+      width: 40%;
+      height: 100%;
+
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .text {
+      width: 60%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 8px;
+      box-sizing: border-box;
+
+    }
+
+    .text div {
+      width: 100%;
+      height: 40px;
+      margin-top: 5px;
+      border: 1px solid var(--red);
+      color: var(--blue);
+      display: flex;
+      padding-left: 10px;
+      align-items: center;
+    }
+
+    .text a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .text div:hover {
+      background-color: #7C2422;
+    }
+
+    .btnzone {
+      display: flex;
+      float: right;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    .cat {
+      color: var(--orange);
+      margin: 10px 2px 20px;
+    }
+
+    ::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width: 10px;
+      /*高宽分别对应横竖滚动条的尺寸*/
+      height: 1px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 5px #7C2422;
+      background: var(--red);
+    }
+
+    ::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      -webkit-box-shadow: inset 0 0 5px #7C2422;
+      border-radius: 10px;
+      background: #EDEDED;
+    }
+  </style>
+</head>
+<body>
+  <div id='main'>
+    <div class='bar'>MENU</div>
+    <div class='body'>
+      <div class='msgbody'>
+        <div class='picture'>
+          <div class='cat'>魔法猫咪，买一送一。</div>
+          <img src='../wxChat_demo/app/img/cat.jpg'>
+        </div>
+        <div class='text'>
+          <div><a href="./calculation.html"">
+              <i class=" fa fa-question-circle" style="font-size:20px"></i> 纯html+CSS键盘
+            </a></div>
+          <div><a href=" ./jcanvas.html"> <i class="fa fa-question-circle" style="font-size:20px"></i> canvas时钟
+            </a>
+          </div>
+          <div><a href="./chess.html">
+              <i class="fa fa-question-circle" style="font-size:20px"></i> canvas象棋
+            </a></div>
+          <div><a href="./star.html">
+              <i class="fa fa-question-circle" style="font-size:20px"></i> canvas太阳系
+            </a></div>
+          <div><a href="./ball.html">
+              <i class="fa fa-question-circle" style="font-size:20px"></i> canvas桌球游戏
+            </a></div>
+          <div><a href="./card.html">
+              <i class="fa fa-question-circle" style="font-size:20px"></i> 斗地主（半成品）
+            </a></div>
+          <div><a href="./card.html">
+              <i class="fa fa-question-circle" style="font-size:20px"></i> 斗地主（半成品）
+            </a></div>
+        </div>
+      </div>
+      <hr>
+      <div class='error'>
+        <i class="fa fa-exclamation-triangle" style="font-size:28px;color:red"></i>
+        我思故我在
+      </div>
+      <div class='btnzone'>
+        <div class='btn'>
+          <div>F</div>
+          <span>确认</span>
+        </div>
+        <div class='btn'>
+          <div>C</div>
+          <span>取消</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+   let isdrag = false;
+   let xgap = 0,
+   ygap = 0;
+   $(".bar").mousedown((event) => {
+   let x = event.pageX,
+   y = event.pageY,
+   y1 = parseInt($("#main").css("top")),
+   x1 = parseInt($("#main").css("left"));
+   console.log(x, x1);
+   xgap = x - x1;
+   ygap = y - y1;
+   isdrag = true;
+   });
+   $(".bar").mouseup(() => {
+   isdrag = false;
+   gap = 0;
+   });
+   $("body").mousemove((event) => {
+   if (!isdrag) return false;
+   let x = event.pageX,
+   y = event.pageY;
+   $("#main").css({
+   left: x - xgap + "px",
+   top: y - ygap + "px",
+   });
+   });
+</script>
+</html>
