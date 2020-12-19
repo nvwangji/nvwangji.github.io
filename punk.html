@@ -42,7 +42,14 @@
       border: 1px solid var(--blue);
       cursor: move;
     }
-
+    .bar i{
+     float:right;
+     margin-right:5px;
+     cursor: pointer;
+   }
+   .bar i:hover{
+   color:red;
+   }
     .body {
       padding: 20px;
     }
@@ -162,7 +169,7 @@
 </head>
 <body>
   <div id='main'>
-    <div class='bar'>MENU</div>
+    <div class='bar'>MENU<i id='colse' class="fa fa-times" style="font-size:24px;color:var(--red)"></i></div>
     <div class='body'>
       <div class='msgbody'>
         <div class='picture'>
@@ -170,25 +177,25 @@
           <img src='https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2551450591,2293101997&fm=26&gp=0.jpg'>
         </div>
         <div class='text'>
-          <div><a href="./calculation.html"">
+          <div><a href="#"">
               <i class=" fa fa-question-circle" style="font-size:20px"></i> 纯html+CSS键盘
             </a></div>
-          <div><a href=" ./jcanvas.html"> <i class="fa fa-question-circle" style="font-size:20px"></i> canvas时钟
+          <div><a href="#"> <i class="fa fa-question-circle" style="font-size:20px"></i> canvas时钟
             </a>
           </div>
-          <div><a href="./chess.html">
+          <div><a href="#">
               <i class="fa fa-question-circle" style="font-size:20px"></i> canvas象棋
             </a></div>
-          <div><a href="./star.html">
+          <div><a href="#">
               <i class="fa fa-question-circle" style="font-size:20px"></i> canvas太阳系
             </a></div>
-          <div><a href="./ball.html">
+          <div><a href="#">
               <i class="fa fa-question-circle" style="font-size:20px"></i> canvas桌球游戏
             </a></div>
-          <div><a href="./card.html">
+          <div><a href="#">
               <i class="fa fa-question-circle" style="font-size:20px"></i> 斗地主（半成品）
             </a></div>
-          <div><a href="./card.html">
+          <div><a href="#">
               <i class="fa fa-question-circle" style="font-size:20px"></i> 斗地主（半成品）
             </a></div>
         </div>
@@ -196,7 +203,7 @@
       <hr>
       <div class='error'>
         <i class="fa fa-exclamation-triangle" style="font-size:28px;color:red"></i>
-        你的源代码中存在致命漏洞！
+        你的智商中存在致命漏洞！
       </div>
       <div class='btnzone'>
         <div class='btn'>
@@ -238,5 +245,9 @@
    top: y - ygap + "px",
    });
    });
+   /////
+     $('#colse').click(()=>{
+     $('body').empty();
+   })
 </script>
 </html>
