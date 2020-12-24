@@ -174,7 +174,7 @@
       <div class='msgbody'>
         <div class='picture'>
           <div class='cat'>魔法猫咪，买一送一。</div>
-          <img src='https://sm.ms/image/dVuTGWSs294RUqy'>
+          <img src='https://i.loli.net/2020/12/24/dVuTGWSs294RUqy.jpg'>
         </div>
         <div class='text'>
           <div><a href="#"">
@@ -207,47 +207,4 @@
       </div>
       <div class='btnzone'>
         <div class='btn'>
-          <div>F</div>
-          <span>确认</span>
-        </div>
-        <div class='btn'>
-          <div>C</div>
-          <span>取消</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-<script>
-   let isdrag = false;
-   let xgap = 0,
-   ygap = 0;
-   $(".bar").mousedown((event) => {
-   let x = event.pageX,
-   y = event.pageY,
-   y1 = parseInt($("#main").css("top")),
-   x1 = parseInt($("#main").css("left"));
-   console.log(x, x1);
-   xgap = x - x1;
-   ygap = y - y1;
-   isdrag = true;
-   });
-   $(".bar").mouseup(() => {
-   isdrag = false;
-   gap = 0;
-   });
-   $("body").mousemove((event) => {
-   if (!isdrag) return false;
-   let x = event.pageX,
-   y = event.pageY;
-   $("#main").css({
-   left: x - xgap + "px",
-   top: y - ygap + "px",
-   });
-   });
-   /////
-     $('#colse').click(()=>{
-     $('body').empty();
-   })
-</script>
-</html>
+          <div
