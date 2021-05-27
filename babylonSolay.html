@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Babylon Template</title>
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+
+<body>
+
+  <canvas id="renderCanvas" touch-action="none"></canvas> //touch-action="none" for best results from PEP
+
+  <script>
+    const log = console.log;
+    const Img = [{
+        v: '0.5',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=9af6e1b274f0f736d8fe4c093a57b382/e5e897504fc2d562b4a70720eb1190ef74c66ca4.jpg'
+      },
+      {
+        v: '1',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=e3eb90f300f3d7ca0cf63f7ec21dbe3c/ce95da88d43f8794df0b9fe3de1b0ef419d53a53.jpg'
+      },
+      {
+        v: '1',
+        p: 'https://pic2.zhimg.com/80/v2-c8a096eaf0f68583987b0838c927cb89_720w.jpg'
+      },
+      {
+        v: '0.6',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=5a6c7cac03b30f24359aec0bf897d192/973f7a094b36acaf0f38413170d98d1003e99c77.jpg'
+      },
+      {
+        v: '3',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=272f50064f166d223877159c76210945/e671c111728b4710cbc62a01cfcec3fdfe032366.jpg'
+      },
+      {
+        v: '2.5',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=18ccadb72ca446237ecaa56aa8207246/1bc0b512c8fcc3ceb6131efe9e45d688d63f2078.jpg'
+      },
+      {
+        v: '2',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=0deea3c99b0a304e5222a0f2e1caa7c3/271b0646f21fbe099b9214d967600c338544ad04.jpg'
+      },
+      {
+        v: '2',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=4a3333eb0524ab18e016e13f05fbe69a/cb0dad44ad345982aae2335f00f431adc9ef84e7.jpg'
+      },
+      {
+        v: '0.3',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=0ab14e93d1c451daf6f60ce386fc52a5/eec19f13b07eca80745cef2a9d2397dda34483f6.jpg'
+      },
+      {
+        v: '0.2',
+        p: 'https://imgsa.baidu.com/forum/w%3D580/sign=4fee5ecc506034a829e2b889fb1149d9/4d0fa5ec8a136327b41b15fe9d8fa0ec0afac75e.jpg'
+      }, //moon
+    ];
+
+    var canvas = document.getElementById("renderCanvas"); // 得到canvas对象的引用
+    var engine = new BABYLON.Engine(canvas, true); // 初始化 BABYLON 3D engine
+    log(engine);
+    /******* Add the create scene function ******/
+    var createScene = function () {
+
+      var scene = new BABYLON.Scene(engine);
+      scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+      // Lights
+      // var light0 = new BABYLON.DirectionalLight("Omni", new BABYLON.Vector3(-6, -5, 2), scene);
+      var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);
+      light1.diffuse = new BABYLON.Color3(1, 1, 1);
+      light1.specular = new BABYLON.Color3(0, 0, 0); //镜面反射
+      light1.intensity = 5;
+      // Need a free camera for collisions
+      var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), scene);
+      camera.setPosition(new BABYLON.Vector3(0, 0, -20));
+      camera.attachControl(canvas, true);
+      log(camera)
+      //add sun https://www.solarsystemscope.com/textures/download/2k_sun.jpg
+      var sun = BABYLON.MeshBuilder.CreateSphere("sun", {
+        diameter: 7,
+      }, scene);
+      sun.material = new BABYLON.StandardMaterial("sun", scene);
+      sun.material.emissiveColor = new BABYLON.Color3(1, 0, 0); //自发光颜色
+      // sun.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+      // sun.material.ambientColor = new BABYLON.Color3(1, 0, 0);
+      sun.material.diffuseTexture = new
+      BABYLON.Texture(
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20181017%2F22%2F1539786116-CkgyLzoPYp.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1624671821&t=999825f2f71fca9710110a1a5748e0ff",
+        scene);
+      sun.position = new BABYLON.Vector3(0, 0, 0);
+
+      //loop add stars
+      for (let i = 0; i < 9; i++) {
+        let names = 'star' + i;
+        let star = BABYLON.MeshBuilder.CreateSphere("star" + i, {
+          diameter: +Img[i].v,
+        }, scene);
+        star.material = new BABYLON.StandardMaterial("starM" + i, scene);
+        star.material.diffuseColor = new BABYLON.Color3(1, 1, 1); //漫反射颜色
+        star.material.diffuseTexture = new
+        BABYLON.Texture(
+          Img[i].p,
+          scene);
+        //star.position = new BABYLON.Vector3(3 * i, (i % 2) / 2, 0);
+        // star.position = new BABYLON.Vector3(x, (i % 2) / 2, Math.hypot(3 * i + 5.5, -x));
+
+        // star.parent = sun;
+        window[names] = star;
+      }
+      let moon = BABYLON.MeshBuilder.CreateSphere("moon", {
+        diameter: 0.3,
+      }, scene);
+      moon.material = new BABYLON.StandardMaterial("moon", scene);
+      moon.material.diffuseTexture = new
+      BABYLON.Texture(
+        Img[9].p,
+        scene);
+      moon.position = new BABYLON.Vector3(1, 0, 0);
+      moon.parent = star2;
+
+      // scene.onPointerMove = function ($event) {
+      //   //mousemovef();
+      //   console.log(camera);
+      //   //camara
+      // };
+      var alpha = 0;
+      scene.registerBeforeRender(function () {
+
+        for (let i = 0; i < 9; i++) {
+          window['star' + i].rotation.y += 0.02;
+          window['star' + i].position = new BABYLON.Vector3((3 * i + 5) * Math.sin(alpha * (9 - i)), (i %
+              2) / 2,
+            (3 * i + 5) * Math.cos((9 - i) * alpha));
+        }
+        moon.rotation.y += 0.02;
+        sun.rotation.y += 0.005;
+        alpha += 0.001;
+      });
+      return scene;
+    };
+    /******* End of the create scene function ******/
+
+    var scene = createScene(); //Call the createScene function
+
+
+    // 最后一步调用engine的runRenderLoop方案，执行scene.render()，让我们的3d场景渲染起来
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
+
+    // 监听浏览器改变大小的事件，通过调用engine.resize()来自适应窗口大小
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
+  </script>
+
+</body>
+
+</html>
