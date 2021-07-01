@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>ice World</title>
+  <style>
+    html,
+    body {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+
+<body>
+  <canvas id="renderCanvas" touch-action="none"></canvas> //touch-action="none" for best results from PEP
+  <script>
+    var canvas = document.getElementById("renderCanvas"); // 得到canvas对象的引用
+    var engine = new BABYLON.Engine(canvas, true); // 初始化 BABYLON 3D engine
+    var Meshs = [];
+    /******* Add the create scene function ******/
+    var createScene = function () {
+      // 创建一个场景scene
+      var scene = new BABYLON.Scene(engine);
+
+      // 添加一个相机，并绑定鼠标事件
+      var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(3, 20, -20),
+        scene);
+      camera.attachControl(canvas, true);
+      camera.setTarget(BABYLON.Vector3.Zero());
+      // 添加一组灯光到场景
+      var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+    //  var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+      light1.diffuseColor =  new BABYLON.Vector3(1, 1, 1);
+      //skyBox
+      var skybox = BABYLON.Mesh.CreateBox("BackgroundSkybox", 1500, scene, undefined, BABYLON.Mesh.BACKSIDE);
+      var backgroundMaterial = new BABYLON.BackgroundMaterial("backgroundMaterial", scene);
+      backgroundMaterial.reflectionTexture = new BABYLON.CubeTexture("./img/skybox/TropicalSunnyDay", scene);
+      backgroundMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+      skybox.material = backgroundMaterial;
+
+      //ground
+      const ground = BABYLON.MeshBuilder.CreateGround("ground", {width:100, height:100});
+
+      //snow mat
+      const snowMat = new BABYLON.StandardMaterial("snowMat", scene);
+      snowMat.diffuseTexture = new BABYLON.Texture("./img/snow.jpg", scene)
+      //wall
+      let wallf = BABYLON.MeshBuilder.CreateBox("wallf", {width: 80, height: 20, depth: 3}, scene);
+      let wallMatf = new BABYLON.StandardMaterial("wallMatf", scene);
+      wallMatf.diffuseColor = new BABYLON.Vector3(1, 1, 1);
+      let wallMatl =wallMatf.clone('wallMatl');
+      let wallMatr =wallMatf.clone('wallMatl');
+      let wallMatb =wallMatf.clone('wallMatl');
+
+      wallf.material = snowMat;
+      let walll = wallf.clone('walll'),wallr = wallf.clone('wallr'),wallb = wallf.clone('wallb');
+      walll.rotation.y = Math.PI/2;
+      wallr.rotation.y = Math.PI/2;
+      wallf.position = new BABYLON.Vector3(0, 10, -40);
+      walll.position = new BABYLON.Vector3(-40, 10, 0);//
+      wallr.position = new BABYLON.Vector3(40, 10, 0);//
+      wallb.position = new BABYLON.Vector3(0, 10, 40);
+      //build
+      let build1 =BABYLON.MeshBuilder.CreateBox("build1", {width: 20, height: 16, depth: 16}, scene);
+      build1.material = snowMat;
+      let build2 =build1.clone('build2');
+      let build3 =build1.clone('build3');
+      let build4 =build1.clone('build4');
+      build1.position = new BABYLON.Vector3(-13, 8, -13);
+      build2.position = new BABYLON.Vector3(-13, 8, 13);
+      build3.position = new BABYLON.Vector3(13, 8, -13);
+      build4.position = new BABYLON.Vector3(13, 8, 13);
+
+      // cylinder
+      const cylinder1 = BABYLON.Mesh.CreateCylinder("cylinder1", 16, 8, 8, 3, 1, scene);
+      cylinder1.position = new BABYLON.Vector3(0, 8, -36.5);
+      cylinder1.rotation.y =-Math.PI/2;
+      cylinder1.scaling.x =2;
+      let cylinder2 = cylinder1.clone('cylinder2');
+      cylinder1.position = new BABYLON.Vector3(0, 8, 36.5);
+      cylinder1.rotation.y =Math.PI/2;
+
+      //smallwall
+      let swMat = new BABYLON.StandardMaterial("swMat", scene);
+      swMat.diffuseTexture = new BABYLON.Texture("./img/zhuan.jpg", scene)
+      let swall1 =BABYLON.MeshBuilder.CreateBox("swall1", {width: 8, height: 6, depth: 1.4}, scene);
+      swall1.material = swMat;
+      let swall2 =swall1.clone('swall2');
+      let swall3 =swall1.clone('swall3');
+      let swall4 =swall1.clone('swall4');
+      let swall5 =swall1.clone('swall5');
+      let swall6 =swall1.clone('swall6');
+
+      swall1.position = new BABYLON.Vector3(-34.5, 3, 0);
+      swall2.position = new BABYLON.Vector3(34.5, 3, 0);
+      swall3.position = new BABYLON.Vector3(-27, 3, 20.3);
+      swall4.position = new BABYLON.Vector3(27, 3, 20.3);
+      swall5.position = new BABYLON.Vector3(-27, 3, -20.3);
+      swall6.position = new BABYLON.Vector3(27, 3, -20.3);
+
+      //gun
+
+      var assetsManager = new BABYLON.AssetsManager(scene);
+      var awp1,awp2,awp4,awp4,awp5;
+      BABYLON.SceneLoader.ImportMeshAsync("", "./assert/MODEL/awp/", "AWPv2.obj").then((res)=>{
+        console.log(res);
+        let mat = new BABYLON.StandardMaterial("mat", scene);
+        mat.diffuseColor = new BABYLON.Vector3(66/256, 69/256, 52/256);
+        let matPink = new BABYLON.StandardMaterial("matPink", scene);
+        matPink.diffuseColor = new BABYLON.Color4(1, 192/256, 203/256,0.6);
+        awp = BABYLON.Mesh.MergeMeshes(res.meshes);
+        awp.position=new BABYLON.Vector3(0, 0.2, -25);
+        awp.material = mat;
+        awp.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+        awp.rotation.y = Math.PI;
+        awp1=awp.clone('awp1');
+        awp2=awp.clone('awp2');
+        awp3=awp.clone('awp3');
+        awp4=awp.clone('awp4');
+        awp1.position.x = -25;
+        awp1.position.y = 1;
+        awp1.material = matPink;
+        awp2.position.x = -15;
+        awp3.position.x = 15;
+        awp4.position.x = 25;
+
+      })
+     
+      // var jinxM = new BABYLON.StandardMaterial("jinxM", scene); //创建一个材质
+      // jinxM.diffuseTexture = new BABYLON.Texture("./assert/Jinx__/Jinx_Base_TX_CM_1.png", scene);
+      // var meshTask3 = assetsManager.addMeshTask("jinx task", "", "assert/Jinx__/", "jinx_obj_.obj");
+      // meshTask3.onSuccess = function (task) {
+      //   console.log(task.loadedMeshes);
+      //   task.loadedMeshes[0].material = jinxM;
+      // }
+      //assetsManager.load();
+      scene.registerBeforeRender(function () {
+         let awp1 = scene.getMeshByName('awp1');
+         if(awp1){
+           awp1.rotation.y+=0.03;
+         }
+      });
+      console.log(scene);
+      return scene;
+    };
+    /******* End of the create scene function ******/
+
+    var scene = createScene(); //Call the createScene function
+    //onPointerObservabl
+    scene.onKeyboardObservable.add(kbInfo => {
+      switch (kbInfo.type) {
+        case BABYLON.KeyboardEventTypes.KEYDOWN:
+          console.log('按键: ', kbInfo.event.key);
+          break;
+        case BABYLON.KeyboardEventTypes.KEYUP:
+          console.log('抬起按键: ', kbInfo.event.keyCode);
+          break;
+      }
+    });
+    // 最后一步调用engine的runRenderLoop方案，执行scene.render()，让我们的3d场景渲染起来
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
+
+    // 监听浏览器改变大小的事件，通过调用engine.resize()来自适应窗口大小
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
+  </script>
+
+</body>
+
+</html>
