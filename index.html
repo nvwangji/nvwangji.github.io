@@ -22,6 +22,8 @@
   </style>
   <script src="https://preview.babylonjs.com/babylon.js"></script>
   <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 </head>
 
@@ -31,15 +33,21 @@
     var canvas = document.getElementById("renderCanvas"); // 得到canvas对象的引用
     var engine = new BABYLON.Engine(canvas, true); // 初始化 BABYLON 3D engine
     var Meshs = [];
+    var player = {
+      weapons: [],
+      name: 'h',
+      mesh: null,
+      hp: 100
+    }
     /******* Add the create scene function ******/
     var createScene = function () {
       // 创建一个场景scene
       var scene = new BABYLON.Scene(engine);
 
       // 添加一个相机，并绑定鼠标事件
-      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 13, -20), scene);
+      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(-20, 12, -40), scene);
       camera.attachControl(canvas, true);
-      camera.setTarget(BABYLON.Vector3.Zero());
+      camera.setTarget(new BABYLON.Vector3(0,13,8));
       camera.keysUp.push(87);
       camera.keysDown.push(83);
       camera.keysLeft.push(65);
@@ -51,8 +59,8 @@
       //重力相机。
       camera.applyGravity = true;
       //摄像机上的椭球属性
-      camera.ellipsoid = new BABYLON.Vector3(1, 5, 1);
-     
+      camera.ellipsoid = new BABYLON.Vector3(2, 5, 2);
+
       // 添加一组灯光到场景
       var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
       //  var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
@@ -69,7 +77,13 @@
         width: 100,
         height: 100
       });
-      ground.checkCollisions =true;
+     var defaultMaterial = new BABYLON.StandardMaterial("defaultMaterial", scene);
+     defaultMaterial.diffuseTexture = new BABYLON.Texture("./img/grass.png", scene);
+     defaultMaterial.diffuseTexture.uScale = 10;
+     defaultMaterial.diffuseTexture.vScale = 10;
+     defaultMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+      ground.material =defaultMaterial;
+      ground.checkCollisions = true;
       //snow mat
       const snowMat = new BABYLON.StandardMaterial("snowMat", scene);
       snowMat.diffuseTexture = new BABYLON.Texture("./img/snow.jpg", scene)
@@ -95,10 +109,10 @@
       walll.position = new BABYLON.Vector3(-40, 10, 0); //
       wallr.position = new BABYLON.Vector3(40, 10, 0); //
       wallb.position = new BABYLON.Vector3(0, 10, 40);
-      walll.checkCollisions =true;
-      wallr.checkCollisions =true;
-      wallf.checkCollisions =true;
-      wallb.checkCollisions =true;
+      walll.checkCollisions = true;
+      wallr.checkCollisions = true;
+      wallf.checkCollisions = true;
+      wallb.checkCollisions = true;
 
       //build
       let build1 = BABYLON.MeshBuilder.CreateBox("build1", {
@@ -114,10 +128,10 @@
       build2.position = new BABYLON.Vector3(-13, 8, 13);
       build3.position = new BABYLON.Vector3(13, 8, -13);
       build4.position = new BABYLON.Vector3(13, 8, 13);
-      build1.checkCollisions =true;
-      build2.checkCollisions =true;
-      build3.checkCollisions =true;
-      build4.checkCollisions =true;
+      build1.checkCollisions = true;
+      build2.checkCollisions = true;
+      build3.checkCollisions = true;
+      build4.checkCollisions = true;
       // cylinder
       const cylinder1 = BABYLON.Mesh.CreateCylinder("cylinder1", 16, 8, 8, 3, 1, scene);
       cylinder1.position = new BABYLON.Vector3(0, 8, -36.5);
@@ -126,7 +140,8 @@
       let cylinder2 = cylinder1.clone('cylinder2');
       cylinder1.position = new BABYLON.Vector3(0, 8, 36.5);
       cylinder1.rotation.y = Math.PI / 2;
-
+      cylinder1.checkCollisions = true;
+      cylinder2.checkCollisions = true;
       //smallwall
       let swMat = new BABYLON.StandardMaterial("swMat", scene);
       swMat.diffuseTexture = new BABYLON.Texture("./img/zhuan.jpg", scene)
@@ -148,7 +163,12 @@
       swall4.position = new BABYLON.Vector3(27, 3, 20.3);
       swall5.position = new BABYLON.Vector3(-27, 3, -20.3);
       swall6.position = new BABYLON.Vector3(27, 3, -20.3);
-
+      swall1.checkCollisions = true;
+      swall2.checkCollisions = true;
+      swall3.checkCollisions = true;
+      swall4.checkCollisions = true;
+      swall5.checkCollisions = true;
+      swall6.checkCollisions = true;
       //gun
 
       var assetsManager = new BABYLON.AssetsManager(scene);
@@ -175,15 +195,22 @@
         awp3.position.x = 15;
         awp4.position.x = 25;
 
-      })
+        adjustWep(player,awp);
 
-      //player
-      var player = BABYLON.MeshBuilder.CreateBox("player", {
+      })
+      player.mesh = BABYLON.MeshBuilder.CreateBox("player", {
         width: 2,
         height: 8,
         depth: 1
       }, scene);
-      // player.position = new BABYLON.Vector3(0.5, 0, 10);
+      player.mesh.parent = camera;
+      player.mesh.position = new BABYLON.Vector3(0.5, 0, 10);
+      player.mesh.isVisible = false;
+
+     //3D GUI
+    //  var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("myUI");
+    //  var keyboard = new BABYLON.GUI.VirtualKeyboard.CreateDefaultLayout();
+    //  advancedTexture.addControl(keyboard);
       //  player.parent = camera;
       // var jinxM = new BABYLON.StandardMaterial("jinxM", scene); //创建一个材质
       // jinxM.diffuseTexture = new BABYLON.Texture("./assert/Jinx__/Jinx_Base_TX_CM_1.png", scene);
@@ -193,13 +220,41 @@
       //   task.loadedMeshes[0].material = jinxM;
       // }
       //assetsManager.load();
-      scene.registerBeforeRender(function () {
-        let awp1 = scene.getMeshByName('awp1');
+      const adjustWep = function(player,awp){
+        player.weapons[0] = null;
+        player.weapons[0] = awp.createInstance('myAwp');
+        player.weapons[0].parent = camera;
+        player.weapons[0].position = new BABYLON.Vector3(2, -3, 10);
+        player.weapons[0].isVisible = true;
+        player.weapons[0].addRotation(Math.PI / 3, 0, 0);
+        player.weapons[0].addRotation(0, 0, -Math.PI / 3);
+        player.weapons[0].addRotation( 0,Math.PI/4, 0);
+      //  player.weapons[0].scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
+      }
+      scene.onBeforeRenderObservable.add(function () {
         if (awp1) {
           awp1.rotation.y += 0.03;
+          // if (player.mesh) {
+          //   if (player.mesh.intersectsMesh(awp1))
+          //     console.log(111);
+          //     player.weapons[0]=(awp1.createInstance("awp1p"));
+          //     player.weapons[0].parent =camera;
+          //     player.weapons[0].position =new BABYLON.Vector3(0,3,6);
+          // }
+          if(!player.weapons[0]){
+            adjustWep(player,awp1);
+          }else{
+            if (player.weapons[0].intersectsPoint(awp1.position)){
+              alert('yes!');
+            }
+          }
+        
+
         }
+
+
       });
-      console.log(scene);
+
       return scene;
     };
     /******* End of the create scene function ******/
@@ -216,7 +271,7 @@
         //  playerCamera.keysDown.push(83);
         //  playerCamera.keysLeft.push(65);
         //  playerCamera.keysRight.push(68);
-        /*  switch (kbInfo.type) {
+         switch (kbInfo.type) {
            
            case BABYLON.KeyboardEventTypes.KEYDOWN:
              console.log('按键: ', kbInfo.event.key);
@@ -240,9 +295,17 @@
            case BABYLON.KeyboardEventTypes.KEYUP:
              console.log('抬起按键: ', kbInfo.event.keyCode);
              break;
-         } */
+         }
       }
 
+    });
+    window.addEventListener("click", function () {
+    // We try to pick an object
+    var pickResult = scene.pick(scene.pointerX, scene.pointerY);
+    console.log(pickResult);
+    if(pickResult.hit){
+      pickResult.pickedMesh.isVisible =false;
+    }
     });
     // 最后一步调用engine的runRenderLoop方案，执行scene.render()，让我们的3d场景渲染起来
     engine.runRenderLoop(function () {
