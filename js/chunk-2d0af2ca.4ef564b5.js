@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0af2ca"],{"0ccd":function(e,n,a){"use strict";a.r(n);var c=function(){var e=this,n=e.$createElement,a=e._self._c||n;return a("div",[e._v(" ROLECONF page ")])},t=[],r={name:"area"},u=r,s=a("2877"),i=Object(s["a"])(u,c,t,!1,null,"5114b6bb",null);n["default"]=i.exports}}]);
