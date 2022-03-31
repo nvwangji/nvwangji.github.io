@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.4.1/dayjs.min.js"></script>
+    <script src='./js/index.js'></script>
+    <title>win11</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div class='item' id='computer'>
+        <div>
+            <img src='./assets/MyComputer.png' />
+        </div>
+        <div>我的电脑</div>
+    </div>
+    <div class='item'>
+        <div>
+            <img src='./assets/Network.png' />
+        </div>
+        <div>网络</div>
+    </div>
+    <div class='item'>
+        <div>
+            <img src='./assets/MusicPlayer.png' />
+        </div>
+        <div>Music</div>
+    </div>
+    <div class='item'>
+        <div>
+            <img src='./assets/MovieTypeMPG.png' />
+        </div>
+        <div>Movie</div>
+    </div>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=357126&auto=1&height=66"></iframe>
+    <!-- ===================windows -->
+    <div id='windows'>
+        <div class='titlebar'>
+            <span>Computer</span>
+            <div id='close'>X</div>
+            <div>口</div>
+            <div>_</div>
+        </div>
+        <div class='winbody'>
+
+        </div>
+    </div>
+</body>
+<footer>
+    <div class='start'>
+        <div id='startbtn'>Start</div>
+    </div>
+    <div class='app'></div>
+    <div class='coin'>
+        <div id='time'></div>
+    </div>
+    <div id='startMenu'>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+</footer>
+<script>
+    function getWeather() {
+      fetch('http://wthrcdn.etouch.cn/weather_mini?city=' + '伍家岗')
+        .then(response => {
+          console.log(response)
+          return response.json()
+        })
+        .then(data => console.log(data));
+    }
+    getWeather();
+</script>
+</html>
