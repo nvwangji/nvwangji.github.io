@@ -1,0 +1,1 @@
+import{s}from"./request.21d5eda1.js";const u=e=>s({url:`./${e}.json`,method:"get"}),n=()=>s({url:"./table.json",method:"get"}),a=e=>new Promise((t,o)=>{e.username==="admin"&&e.password==="123456"?t({code:1e4,data:{token:"qwertyuiopasdfghjklzxcvbnm1234567890"},msg:"\u767B\u5F55\u6210\u529F"}):t({code:0,msg:"\u767B\u5F55\u5931\u8D25"})});export{n as f,u as g,a as l};
